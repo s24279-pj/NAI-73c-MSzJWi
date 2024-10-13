@@ -16,8 +16,11 @@ def make_board():
     return board
 
 def print_board(board):
-    for row in board:
-        print(' '.join(row))  # Wydrukuj każdy wiersz z przestrzeniami między elementami
+    print('   ',*range(8))
+    print('  ',' -'*8) # Wydrukowanie indeksów kolumn
+    for i in range(len(board)):
+        print(i, '|', ' '.join(board[i])) #drukowanie wierszy wraz z ich indeksami
+
 
 def main():
     board = make_board()
