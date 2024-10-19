@@ -1,5 +1,4 @@
 from easyAI import TwoPlayerGame, Human_Player, AI_Player, Negamax
-import moves
 
 def make_board():
     board = [[' '] * 8 for _ in range(8)]
@@ -11,7 +10,7 @@ def make_board():
 
     for row in [5, 6, 7]:
         for col in range(8):
-            if (col % 2 == 0 and row % 2 == 1) or (col % 2 == 1 and row % 2 == 0):
+            if (col % 2 == 0 and row % 2 == 0) or (col % 2 == 1 and row % 2 == 1):
                 board[row][col] = 'B'
 
     return board
