@@ -1,4 +1,5 @@
 from easyAI import TwoPlayerGame, Human_Player, AI_Player, Negamax
+import random
 
 def make_board():
     board = [[' '] * 8 for _ in range(8)]
@@ -23,27 +24,72 @@ def print_board(board):
 
 def move(board, current_player, move_direction, checker_row, checker_column):
 
+    global white_points, black_points
+
     if current_player == "white":
+        if checker_row == 6:
+            board[checker_row][checker_column] = " "  # Czyści aktualnie zajmowane pole
+            board[checker_row + 1][checker_column - 1] = " "  # Wypełnia nowe pole (ruch w lewo)
+            print("DOTARŁEŚ DO KOŃCA PLANSZY, ZDOBYWASZ PUNKT")
+            white_points += 1
         match move_direction:
             case "left":
-                board[checker_row][checker_column] = " "  # Czyści aktualnie zajmowane pole
-                board[checker_row + 1][checker_column - 1] = "W"  # Wypełnia nowe pole (ruch w lewo)
+                if board[checker_row + 1][checker_column - 1] == "W":
+                    print("Nie można poruszyć się tym pionkiem w lewo, ponieważ stoi już tam Twój inny pionek")
+                    game_loop(board, current_player)
+                if board[checker_row + 1][checker_column - 1] == "B":  # Sprawdź zbicie
+                    board[checker_row + 1][checker_column - 1] = "W"  # Zbij pionka
+                    board[checker_row][checker_column] = " "
+                    white_points += 1
+                    print("Zdobywasz punkt")
+                else:
+                    board[checker_row][checker_column] = " "  # Czyści aktualnie zajmowane pole
+                    board[checker_row + 1][checker_column - 1] = "W"  # Wypełnia nowe pole (ruch w lewo)
             case "right":
-                board[checker_row][checker_column] = " "  # Czyści aktualnie zajmowane pole
-                board[checker_row + 1][checker_column + 1] = "W"  # Wypełnia nowe pole (ruch w prawo)
+                if board[checker_row + 1][checker_column + 1] == "W":
+                    print("Nie można poruszyć się tym pionkiem w prawo, ponieważ stoi już tam Twój inny pionek")
+                    game_loop(board, current_player)
+                if board[checker_row + 1][checker_column + 1] == "B":  # Sprawdź zbicie
+                    board[checker_row + 1][checker_column + 1] = "W"  # Zbij pionka
+                    board[checker_row][checker_column] = " "
+                    white_points += 1
+                    print("Zdobywasz punkt")
+                else:
+                    board[checker_row][checker_column] = " "  # Czyści aktualnie zajmowane pole
+                    board[checker_row + 1][checker_column + 1] = "W"  # Wypełnia nowe pole (ruch w prawo)
     elif current_player == "black":
+        if checker_row == 1:
+            board[checker_row][checker_column] = " "  # Czyści aktualnie zajmowane pole
+            print("DOTARŁEŚ DO KOŃCA PLANSZY, ZDOBYWASZ PUNKT")
+            black_points += 1
         match move_direction:
             case "left":
-                board[checker_row][checker_column] = " "
-                board[checker_row - 1][checker_column - 1] = "B"
+                if board[checker_row - 1][checker_column - 1] == "B":
+                    print("Nie można poruszyć się tym pionkiem w lewo, ponieważ stoi już tam Twój inny pionek")
+                    game_loop(board, current_player)
+                if board[checker_row - 1][checker_column - 1] == "W":  # Sprawdź zbicie
+                    board[checker_row - 1][checker_column - 1] = "B"  # Zbij pionka
+                    board[checker_row][checker_column] = " "
+                    black_points += 1
+                    print("Zdobywasz punkt")
+                else:
+                    board[checker_row][checker_column] = " "
+                    board[checker_row - 1][checker_column - 1] = "B"
             case "right":
-                board[checker_row][checker_column] = " "
-                board[checker_row - 1][checker_column + 1] = "B"
+                if board[checker_row - 1][checker_column + 1] == "B":
+                    print("Nie można poruszyć się tym pionkiem w prawo, ponieważ stoi już tam Twój inny pionek")
+                    game_loop(board, current_player)
+                if board[checker_row - 1][checker_column + 1] == "W":  # Sprawdź zbicie
+                    board[checker_row - 1][checker_column + 1] = "B"  # Zbij pionka
+                    board[checker_row][checker_column] = " "
+                    black_points += 1
+                    print("Zdobywasz punkt")
+                else:
+                    board[checker_row][checker_column] = " "
+                    board[checker_row - 1][checker_column + 1] = "B"
 
-
-def choose_and_validate_move(board, current_player, move_count_w, move_count_b):
+def choose_and_validate_move(board, current_player):
     checker = "W" if current_player == "white" else "B"
-    move_count = move_count_w if current_player == "white" else move_count_b
 
     position_row = sorted(set(
         row for row in range(len(board))
@@ -52,32 +98,11 @@ def choose_and_validate_move(board, current_player, move_count_w, move_count_b):
 
     print("Wybierz pionka: ")
 
-    if current_player == "white":
-        if move_count == 0:  # Sprawdzenie, czy to pierwszy ruch
-            print("Dostępne wiersze (X):", max(position_row))
-            while True:
-                x = int(input("X (boczne wartości) z możliwych do wyboru: "))
-                if x == max(position_row):
-                    break
-        else:
-            print("Dostępne wiersze (X):", position_row)
-            while True:
-                x = int(input("X (boczne wartości) z możliwych do wyboru: "))
-                if x in position_row:
-                    break
-    elif current_player == "black":
-        if move_count == 0:  # Sprawdzenie, czy to pierwszy ruch
-            print("Dostępne wiersze (X):", min(position_row))
-            while True:
-                x = int(input("X (boczne wartości) z możliwych do wyboru: "))
-                if x == min(position_row):
-                    break
-        else:
-            print("Dostępne wiersze (X):", position_row)
-            while True:
-                x = int(input("X (boczne wartości) z możliwych do wyboru: "))
-                if x in position_row:
-                    break
+    print("Dostępne wiersze (X):", position_row)
+    while True:
+        x = int(input("X (boczne wartości) z możliwych do wyboru: "))
+        if x in position_row:
+            break
 
     position_col = sorted(set(
         col for col in range(len(board[x])) if board[x][col] == checker
@@ -101,28 +126,34 @@ def choose_and_validate_move(board, current_player, move_count_w, move_count_b):
 
     return direction, x, y
 
+def game_loop(board, current_player):
+
+    print(f"Ruch gracza: {current_player}")
+    direction, x, y = choose_and_validate_move(board, current_player)
+    move(board, current_player, direction, x, y)
+    print_board(board)
+
+    current_player = "black" if current_player == "white" else "white"
+    # Zamień gracza po każdym ruchu
+    return current_player
 
 def main():
+    global white_points, black_points
+    white_points = 0
+    black_points = 0
     board = make_board()
     print_board(board)
-    move_count_w = 0  # Licznik ruchów dla białego gracza
-    move_count_b = 0  # Licznik ruchów dla czarnego gracza
-    current_player = "white"
+    current_player = random.choice(["white", "black"])
 
-    while True:  # Pętla gry
-        print(f"Ruch gracza: {current_player}")
-        direction, x, y = choose_and_validate_move(board, current_player, move_count_w, move_count_b)
-        move(board, current_player, direction, x, y)
-        print_board(board)
-
-        # Zwiększ licznik ruchów
-        if current_player == "white":
-            move_count_w += 1
-        else:
-            move_count_b += 1
-
-        # Zamień gracza po każdym ruchu
-        current_player = "black" if current_player == "white" else "white"
+    while True:
+        current_player = game_loop(board, current_player)
+        if not any('W' in row for row in board) or not any('B' in row for row in board):
+            if white_points > black_points:
+                print("GRACZ Z BIAŁYMI PIONKAMI WYGRYWA")
+                break
+            else:
+                print("GRACZ Z CZARNYMI PIONKAMI WYGRYWA")
+                break
 
 
 if __name__ == '__main__':
