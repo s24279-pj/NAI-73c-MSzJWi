@@ -21,145 +21,123 @@ def print_board(board):
     for i in range(len(board)):
         print(i, '|', ' '.join(board[i])) #drukowanie wierszy wraz z ich indeksami
 
-## TO-DO
-#logika poruszania się po planszy. --- do dodania jeszcze atak tutaj, czyli co się stanie, jak napotkasz innego pionka
-def move(board, current_player, move_direction, checker_row, checker_column):
-    if current_player == "white":
-        if move_direction == "left":
-            board[checker_row][checker_column] = " "  # Czyści pole
-            board[checker_row + 1][checker_column - 1] = "W"  # Przesuwa się w lewo
-        elif move_direction == "right":
-            board[checker_row][checker_column] = " " 
-            board[checker_row + 1][checker_column + 1] = "W"  # Przesuwa się w prawo
-    elif current_player == "black":
-        if move_direction == "left":
-            board[checker_row][checker_column] = " "
-            board[checker_row - 1][checker_column - 1] = "B"
-        elif move_direction == "right":
-            board[checker_row][checker_column] = " "
-            board[checker_row - 1][checker_column + 1] = "B"
-
-def choose_and_validate_move(board, current_player, move_count_w, move_count_b):
-    checker = "W" if current_player == "white" else "B"
-    move_count = move_count_w if current_player == "white" else move_count_b
-
-    position_row = sorted(set(
-        row for row in range(len(board))
-        for col in range(len(board[row])) if board[row][col] == checker
-    ))
-
-    print("Wybierz pionka: ")
-
-    if current_player == "white":
-        if move_count == 0:  # Sprawdzenie, czy to pierwszy ruch
-            print("Dostępne wiersze (X):", max(position_row))
-            while True:
-                x = int(input("X (boczne wartości) z możliwych do wyboru: "))
-                if x == max(position_row):
-                    break
-        else:
-            print("Dostępne wiersze (X):", position_row)
-            while True:
-                x = int(input("X (boczne wartości) z możliwych do wyboru: "))
-                if x in position_row:
-                    break
-    elif current_player == "black":
-        if move_count == 0:  # Sprawdzenie, czy to pierwszy ruch
-            print("Dostępne wiersze (X):", min(position_row))
-            while True:
-                x = int(input("X (boczne wartości) z możliwych do wyboru: "))
-                if x == min(position_row):
-                    break
-        else:
-            print("Dostępne wiersze (X):", position_row)
-            while True:
-                x = int(input("X (boczne wartości) z możliwych do wyboru: "))
-                if x in position_row:
-                    break
-
-    position_col = sorted(set(
-        col for col in range(len(board[x])) if board[x][col] == checker
-    ))
-
-    print("Dostępne kolumny (Y):", position_col)
-    while True:
-        y = int(input("Y (górne wartości) z możliwych do wyboru: "))
-        if y in position_col:
-            break
-
-    print("Wybierz kierunek ruchu: ")
-    while True:
-        direction = input("left/right: ")
-        if direction == "left" and y == 0:
-            print("Nie można poruszyć się w lewo, wyjście poza plansze")
-        elif direction == "right" and y == 7:
-            print("Nie można poruszyć się w prawo, wyjście poza plansze")
-        elif direction in ["left", "right"]:
-            break
-
-    return direction, x, y
 
 class Checkers(TwoPlayerGame):
     def __init__(self, players):
         self.players = players
         self.board = make_board()
         self.current_player = 1
+        self.white_points = 0
+        self.black_points = 0
     
     #TO-DO chyba tutaj tez trzeba dodać atak
-    # lista dostępnych ruchów dla AI
+    # lista dostępnych ruchów dla AI i czlowieka
     def possible_moves(self):
+        # Zwraca listę dostępnych ruchów w formacie: [(direction, x, y)]
         moves = []
-        #ustawia literke gracza, zaleznie, który został wybrany
-        current_player = 'W' if self.current_player == 1 else 'B'
-        #direction - zmienna okreslająca, w która stone wykona się ruch, zalenie od gracza
-        direction = 1 if self.current_player == 1 else -1
-    
-        #iteracja po kadym polu planszy
-        for row in range(8):
-            for col in range(8):
-                #jeśli trafi na pole z oznaczeniem obecnego gracza
-                if self.board[row][col] == current_player:
-                    #sprawdza, czy mozliwy jest ruch w lewo
-                    if col > 0 and self.board[row + direction][col - 1] == ' ':
-                        moves.append((row, col, "left"))
-                    #sprawdza, czy mozliwy jest ruch w prawo
-                    if col < 7 and self.board[row + direction][col + 1] == ' ':
-                        moves.append((row, col, "right"))
-
+        checker = 'W' if self.current_player == 1 else 'B'
+        for x in range(8):
+            for y in range(8):
+                if self.board[x][y] == checker:
+                    if self.can_move_left(x, y):
+                        moves.append(("left", x, y))
+                    if self.can_move_right(x, y):
+                        moves.append(("right", x, y))
         return moves
 
-    # wykonanie ruchu, przekazując funkcję move()
+    def can_move_left(self, x, y):
+        if self.current_player == 1:  # Gracz biały
+            return y > 0 and self.board[x + 1][y - 1] in [' ', 'B'] #moze wejsc na pole gdy jest przeciwnik lub puste
+        else:  # Gracz czarny
+            return y > 0 and self.board[x - 1][y - 1] in [' ', 'W']
+
+    def can_move_right(self, x, y):
+        if self.current_player == 1:  # Gracz biały
+            return y < 7 and self.board[x + 1][y + 1] in [' ', 'B']
+        else:  # Gracz czarny
+            return y < 7 and self.board[x - 1][y + 1] in [' ', 'W']
+
+    # wykonanie ruchu, przekazując zbior ruchow move[]
     def make_move(self, move):
-        #sprawdzay, który gracz wykonuje ruch
-        if isinstance(self.players[self.current_player - 1], AI_Player):
-            #jesli AI, przekazuje do move "zapakowane" ponizsze zmienne 
-            checker_row, checker_column, move_direction = move
+        direction, x, y = move
+        if direction == "left":
+            #przekazujemy do funkcji move_piece położenie pionka,od razu obliczamy
+            # na jakie miejsce pionek ma się przesunąć
+            self.move_piece(x, y, x + (1 if self.current_player == 1 else -1), y - 1)
+        elif direction == "right":
+            self.move_piece(x, y, x + (1 if self.current_player == 1 else -1), y + 1)
+
+    #funkcja zmieniajaca polozenie pionka na tablicy
+    def move_piece(self, old_x, old_y, new_x, new_y):
+        checker = 'W' if self.current_player == 1 else 'B'
+
+        # Sprawdzenie, czy zbijamy pionek przeciwnika lub dochodzimy do końca planszy
+        if (self.current_player == 1 and (self.board[new_x][new_y] == 'B' or old_x == 6)) or \
+           (self.current_player == 2 and (self.board[new_x][new_y] == 'W' or old_x == 0)):
+            if self.current_player == 1:
+                self.white_points += 1
+            else:
+                self.black_points += 1
+
+        self.board[old_x][old_y] = ' '  # Czyszczenie starego pola
+        if (self.current_player == 1 and old_x == 6) or (self.current_player == 2 and old_x == 0):
+                    self.board[new_x][new_y] = ' '  # Usuniecie pionka, ponieważ dotarł do końca planszy
         else:
-            #jesli czlowiek, przekazuje te same zmienne do funcji walidujacej ruch gracza
-            move_direction, checker_row, checker_column = choose_and_validate_move(self.board, self.get_current_player())
-
-        #przypisanie aktuyalnego gracza do zmiennej
-        current_player = "white" if self.current_player == 1 else "black"
-        
-        #wykonanie logiki ruchu z naszej funkcji move()
-        move(self.board, current_player, move_direction, checker_row, checker_column)
-
+            self.board[new_x][new_y] = checker  # Przesunięcie pionka
     #pobranie aktualnego gracza
     def get_current_player(self):
         return "white" if self.current_player == 1 else "black"
     
-    #koniec gry jest wtedy, gdy nie ma mozliwych ruchów
+    #koniec gry jest wtedy, gdy nie ma pionków jednego z graczy lub nie ma ruchów
     def is_over(self):
+        return not self.possible_moves() or \
+            not any('W' in row for row in self.board) or \
+            not any('B' in row for row in self.board)
 
-    #liczy ilość pozostalych pionków - wygra ten co ma wiecej
-    def scoring():
+    #liczy ilość punktów za zbicie lub dotarcie do konca planszy
+    def scoring(self):
+        # Wynik to różnica punktów między graczami
+        return self.white_points - self.black_points
     
     #wyswietla plansze -- trzeba będzie jakoś ją wyświetlić po ruchu
     def show(self):
         print_board(self.board)
+        print(f"Punkty: Białego gracza: {self.white_points}, Czarnego gracza: {self.black_points}")
+
+    def play(self):
+        while not self.is_over():
+            print(f"Ruch gracza: {'Biały' if self.current_player == 1 else 'Czarny'}")
+            if self.current_player == 1:  # Gracz człowiek, białe pionki
+                available_moves = self.possible_moves()
+                print("Dostępne ruchy:")
+                for i, move in enumerate(available_moves):
+                    direction, x, y = move
+                    print(f"{i + 1}: Pionek na ({x}, {y}), ruch w {direction}")
+                while True:
+                    move_index = input("Wybierz numer ruchu: ")
+                    # gracz moze wybrac numer przekazanych mu ruchów bez konieczności wpisywania np. left 2 2
+                    # wystarczy ze poda numer od 1 do długości listy możliwych ruchów
+                    if move_index.isdigit() and range(0, len(available_moves)):
+                        move_index = int(move_index) - 1
+                        break
+                self.make_move(available_moves[move_index])
+            else:  # Gracz AI
+                move = self.players[1].ask_move(self)
+                self.make_move(move)
+
+            self.show()
+            if self.current_player == 1:
+                self.current_player = 2
+            else:
+                self.current_player = 1
 
 
 if __name__ == "__main__":
     ai_algo = Negamax(3)
     game = Checkers([Human_Player(), AI_Player(ai_algo)])
     game.play()
+
+    if game.white_points > game.black_points:
+        print("GRACZ Z BIAŁYMI PIONKAMI WYGRYWA")
+    else:
+        print("GRACZ Z CZARNYMI PIONKAMI WYGRYWA")
