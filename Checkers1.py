@@ -105,6 +105,7 @@ class Checkers(TwoPlayerGame):
         print(f"Punkty: Białego gracza: {self.white_points}, Czarnego gracza: {self.black_points}")
 
     def play(self):
+        print_board(self.board)
         while not self.is_over():
             print(f"Ruch gracza: {'Biały' if self.current_player == 1 else 'Czarny'}")
             if self.current_player == 1:  # Gracz człowiek, białe pionki
