@@ -29,8 +29,11 @@ class Checkers(TwoPlayerGame):
         self.current_player = 1
         self.white_points = 0
         self.black_points = 0
+
+    def show(self):
+        print_board(self.board)
+        print(f"Punkty: Białego gracza: {self.white_points}, Czarnego gracza: {self.black_points}")
     
-    #TO-DO chyba tutaj tez trzeba dodać atak
     # lista dostępnych ruchów dla AI i czlowieka
     def possible_moves(self):
         # Zwraca listę dostępnych ruchów w formacie: [(direction, x, y)]
@@ -47,43 +50,71 @@ class Checkers(TwoPlayerGame):
 
     def can_move_left(self, x, y):
         if self.current_player == 1:  # Gracz biały
-            return y > 0 and self.board[x + 1][y - 1] in [' ', 'B'] #moze wejsc na pole gdy jest przeciwnik lub puste
+            if y > 1 and x < 6 and self.board[x + 2][y - 2] == ' ' and self.board[x + 1][y - 1] == 'B':
+                return True
+            if y > 0 and self.board[x + 1][y - 1] == ' ':
+                return True
         else:  # Gracz czarny
-            return y > 0 and self.board[x - 1][y - 1] in [' ', 'W']
+            if y > 1 and x > 1 and self.board[x - 2][y - 2] == ' ' and self.board[x - 1][y - 1] == 'W':
+                return True
+            if y > 0 and self.board[x - 1][y - 1] == ' ':
+                return True
+        return False
 
     def can_move_right(self, x, y):
         if self.current_player == 1:  # Gracz biały
-            return y < 7 and self.board[x + 1][y + 1] in [' ', 'B']
+            if y < 6 and x < 6 and self.board[x + 1][y + 1] == 'B' and self.board[x + 2][y + 2] == ' ':
+                return True
+            if y < 7 and self.board[x + 1][y + 1] == ' ':
+                return True
         else:  # Gracz czarny
-            return y < 7 and self.board[x - 1][y + 1] in [' ', 'W']
+            if y < 6 and x > 1 and self.board[x - 1][y + 1] == 'W' and self.board[x - 2][y + 2] == ' ':
+                return True
+            if y < 7 and self.board[x - 1][y + 1] == ' ':
+                return True
+        return False
 
     # wykonanie ruchu, przekazując zbior ruchow move[]
     def make_move(self, move):
         direction, x, y = move
         if direction == "left":
-            #przekazujemy do funkcji move_piece położenie pionka,od razu obliczamy
-            # na jakie miejsce pionek ma się przesunąć
-            self.move_piece(x, y, x + (1 if self.current_player == 1 else -1), y - 1)
+            if self.current_player == 1 and y > 1 and self.board[x + 1][y - 1] == 'B' and self.board[x + 2][y - 2] == ' ':
+                self.board[x + 1][y - 1] = " "
+                self.move_piece(x, y, x + 2, y - 2)
+                self.white_points += 1  # Punkt za zbicie przeciwnika
+            elif self.current_player == 2 and y > 1 and self.board[x - 1][y - 1] == 'W' and self.board[x - 2][y - 2] == ' ':
+                self.board[x - 1][y - 1] = " "
+                self.move_piece(x, y, x - 2, y - 2)
+                self.black_points += 1  # Punkt za zbicie przeciwnika
+            else:
+                self.move_piece(x, y, x + (1 if self.current_player == 1 else -1), y - 1)
+
         elif direction == "right":
-            self.move_piece(x, y, x + (1 if self.current_player == 1 else -1), y + 1)
+            if self.current_player == 1 and y < 6 and self.board[x + 1][y + 1] == 'B' and self.board[x + 2][y + 2] == ' ':
+                self.board[x + 1][y + 1] = " "
+                self.move_piece(x, y, x + 2, y + 2)
+                self.white_points += 1  # Punkt za zbicie przeciwnika
+            elif self.current_player == 2 and y < 6 and self.board[x - 1][y + 1] == 'W' and self.board[x - 2][y + 2] == ' ':
+                self.board[x - 1][y + 1] = " "
+                self.move_piece(x, y, x - 2, y + 2)
+                self.black_points += 1  # Punkt za zbicie przeciwnika
+            else:
+                self.move_piece(x, y, x + (1 if self.current_player == 1 else -1), y + 1)
 
     #funkcja zmieniajaca polozenie pionka na tablicy
     def move_piece(self, old_x, old_y, new_x, new_y):
         checker = 'W' if self.current_player == 1 else 'B'
 
-        # Sprawdzenie, czy zbijamy pionek przeciwnika lub dochodzimy do końca planszy
-        if (self.current_player == 1 and (self.board[new_x][new_y] == 'B' or old_x == 6)) or \
-           (self.current_player == 2 and (self.board[new_x][new_y] == 'W' or old_x == 0)):
+        # Sprawdzenie, czy dochodzimy do końca planszy
+        if (self.current_player == 1 and new_x == 7) or (self.current_player == 2 and new_x == 0):
             if self.current_player == 1:
                 self.white_points += 1
             else:
                 self.black_points += 1
 
         self.board[old_x][old_y] = ' '  # Czyszczenie starego pola
-        if (self.current_player == 1 and old_x == 6) or (self.current_player == 2 and old_x == 0):
-                    self.board[new_x][new_y] = ' '  # Usuniecie pionka, ponieważ dotarł do końca planszy
-        else:
-            self.board[new_x][new_y] = checker  # Przesunięcie pionka
+        self.board[new_x][new_y] = checker  # Przesunięcie pionka
+
     #pobranie aktualnego gracza
     def get_current_player(self):
         return "white" if self.current_player == 1 else "black"
@@ -98,11 +129,6 @@ class Checkers(TwoPlayerGame):
     def scoring(self):
         # Wynik to różnica punktów między graczami
         return self.white_points - self.black_points
-    
-    #wyswietla plansze -- trzeba będzie jakoś ją wyświetlić po ruchu
-    def show(self):
-        print_board(self.board)
-        print(f"Punkty: Białego gracza: {self.white_points}, Czarnego gracza: {self.black_points}")
 
     def play(self):
         print_board(self.board)
@@ -137,6 +163,7 @@ if __name__ == "__main__":
     ai_algo = Negamax(3)
     game = Checkers([Human_Player(), AI_Player(ai_algo)])
     game.play()
+
 
     if game.white_points > game.black_points:
         print("GRACZ Z BIAŁYMI PIONKAMI WYGRYWA")
