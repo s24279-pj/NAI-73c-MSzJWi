@@ -142,11 +142,11 @@ class Checkers(TwoPlayerGame):
                     print(f"{i + 1}: Pionek na ({x}, {y}), ruch w {direction}")
                 while True:
                     move_index = input("Wybierz numer ruchu: ")
-                    # gracz moze wybrac numer przekazanych mu ruchów bez konieczności wpisywania np. left 2 2
-                    # wystarczy ze poda numer od 1 do długości listy możliwych ruchów
-                    if move_index.isdigit() and range(0, len(available_moves)):
+                    if move_index.isdigit() and 0 < int(move_index) < len(available_moves):
                         move_index = int(move_index) - 1
                         break
+                    else:
+                        print("Nieprawidłowy numer ruchu. Wybierz ponownie.")
                 self.make_move(available_moves[move_index])
             else:  # Gracz AI
                 move = self.players[1].ask_move(self)
