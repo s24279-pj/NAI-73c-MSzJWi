@@ -18,6 +18,11 @@ A basic implementation of a simplified Checkers game.
 
 ---
 
+### Screenshot
+
+![screenshot](image/SampleScreenshot.png)
+
+
 ## Setup
 
 ### 1. Install Dependencies
