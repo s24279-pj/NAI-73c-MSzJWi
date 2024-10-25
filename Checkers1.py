@@ -1,3 +1,7 @@
+## WELCOME to simplified Checkers game.
+# Rules and instruction you can find here: https://github.com/s24279-pj/NAI-73c-MSzJWi
+# Have fun.
+
 from easyAI import TwoPlayerGame, Human_Player, AI_Player, Negamax
 
 def make_board(): # Początkowe ustawienie pionków na planszy
