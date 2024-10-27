@@ -26,22 +26,22 @@ humidity_air.view()
 temperature.view()
 
 rule1 = ctrl.Rule(humidity_soil['poor'] | humidity_air['poor'] | temperature['hot'], time['long'])
-rule2 = ctrl.Rule(humidity_soil['average'] | humidity_air['poor'] | temperature['cold'], time['medium'])
-rule3 = ctrl.Rule(humidity_soil['average'] | humidity_air['average'] | temperature['cold'], time['short'])
+rule2 = ctrl.Rule(humidity_soil['good'] | humidity_air['good'] | temperature['optimal'], time['short'])
+rule3 = ctrl.Rule(humidity_soil['poor'] | humidity_air['good'] | temperature['optimal'], time['medium'])
+rule4 = ctrl.Rule(humidity_soil['good'] & humidity_air['good'] | temperature['cold'], time['short'])
 
 watering_ctrl = ctrl.ControlSystem([rule1, rule2, rule3])
 
 watering = ctrl.ControlSystemSimulation(watering_ctrl)
 
-watering.input['humidity air'] = 26
-watering.input['humidity soil'] = 9.8
-watering.input['temperature'] = 27
+watering.input['humidity air'] = 90
+watering.input['humidity soil'] = 90
+watering.input['temperature'] = 16
 
 # Crunch the numbers
 watering.compute()
 
-print (watering.output['time'])
+print(watering.output['time'])
 time.view(sim=watering)
-
 
 plt.show()
