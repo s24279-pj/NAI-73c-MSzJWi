@@ -52,9 +52,9 @@ watering_ctrl = ctrl.ControlSystem([rule1, rule2, rule3, rule4, rule5, rule6, ru
 watering = ctrl.ControlSystemSimulation(watering_ctrl)
 
 #Przykładowe dane wejściowe
-watering.input['humidity air'] = 0
-watering.input['humidity soil'] = 0
-watering.input['temperature'] = 35
+watering.input['humidity air'] = 100
+watering.input['humidity soil'] = 90
+watering.input['temperature'] = 27
 
 # Przeprowadzenie obliczeń
 watering.compute()
