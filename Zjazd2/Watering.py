@@ -1,3 +1,15 @@
+####################################
+#   System nawadniania truskawek   #
+#                                  #
+# Na podstawie danej temperatury,  #
+# wilgotności powietrza i gleby,   #
+# system wyznaczy jak długo trzeba #
+# podlewać truskawki (czas w min)  #
+#                                  #
+# Marta Szpilka, Jakub Więcek      #
+####################################
+
+
 import matplotlib.pyplot as plt
 import numpy as np
 import skfuzzy as fuzz
