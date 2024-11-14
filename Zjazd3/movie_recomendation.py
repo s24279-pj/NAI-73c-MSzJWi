@@ -8,7 +8,8 @@ def build_arg_parser():
     parser = argparse.ArgumentParser(description='Compute similarity score')
     parser.add_argument('--person1', dest='person1', required=True,
             help='First user')
-    parser.add_argument('--person2', dest='person2', required=True,
+    # Ustawienie required na False, ponieważ nie jest konieczne porównywanie sie do jednej osoby
+    parser.add_argument('--person2', dest='person2', required=False,
             help='Second user')
     parser.add_argument("--score-type", dest="score_type", required=True,
             choices=['Euclidean', 'Pearson'], help='Similarity metric to be used')
@@ -94,3 +95,165 @@ def pearson_score(dataset, person1, person2):
         return 0
 
     return Sxy / np.sqrt(Sxx * Syy)
+
+# Funkcja porównująca jedną osobę do wszystkich innych użytkowników w zbiorze danych
+def compare_to_all(dataset, person, score_type):
+    # Sprawdź, czy wybrana osoba znajduje się w zbiorze danych
+    if person not in dataset:
+        print("Dostępne osoby w zbiorze:", list(dataset.keys()))
+        raise TypeError(f'Cannot find {person} in the dataset')
+
+
+    # Słownik do przechowywania wyników porównań
+    similarity_scores = {}
+
+    # Iteracja przez wszystkich użytkowników w zbiorze danych
+    for other_person in dataset:
+        # Pomijamy osobę porównywaną
+        if other_person == person:
+            continue
+
+        # Oblicz wynik podobieństwa w zależności od wybranego typu metryki
+        if score_type == "Euclidean":
+            score = euclidean_score(dataset, person, other_person)
+        elif score_type == "Pearson":
+            score = pearson_score(dataset, person, other_person)
+        else:
+            raise ValueError("Invalid score_type. Choose 'Euclidean' or 'Pearson'.")
+
+        # Dodaj wynik podobieństwa do słownika wyników
+        similarity_scores[other_person] = score
+
+    return similarity_scores
+
+
+def recommended_movies(dataset, person1, person2, score_type):
+    recommended_movies = set()
+    non_common_movies = {}
+    good_rate = 10
+    bad_rate = 1
+    rate_change = 0
+
+    for item in dataset[person2]:
+       if item not in dataset[person1]:
+           non_common_movies[item] = 1
+
+    if score_type == "Euclidean":
+        # Przechodzimy przez wszystkie filmy, zaczynając od "dobrych" ocen
+        while len(recommended_movies) < 5:
+            for item in non_common_movies:
+                # Jeśli ocena jest większa lub równa good_rate - rate_change, dodajemy film do listy
+                if dataset[person2][item] >= good_rate - rate_change:
+                    recommended_movies.add(item)
+                if len(recommended_movies) == 5:
+                    break
+
+            # Jeśli lista nie jest pełna po przejściu przez wszystkie filmy, zmniejszamy rate_change
+            if len(recommended_movies) < 5:
+                rate_change += 1  # Zmniejszamy good_rate o 1
+
+    else:
+        # Przechodzimy przez wszystkie filmy, zaczynając od "złych" ocen
+        while len(recommended_movies) < 5:
+            for item in non_common_movies:
+                # Jeśli ocena jest mniejsza lub równa bad_rate - rate_change, dodajemy film do listy
+                if dataset[person2][item] <= bad_rate + rate_change:
+                    recommended_movies.add(item)
+                if len(recommended_movies) == 5:
+                    break
+
+            # Jeśli lista nie jest pełna po przejściu przez wszystkie filmy, zmniejszamy rate_change
+            if len(recommended_movies) < 5:
+                rate_change += 1  # Zmieniamy wartość bad_rate (zwiększamy ją)
+
+    print(recommended_movies)
+    return recommended_movies
+
+
+def not_recommended_movies(dataset, person1, person2,score_type):
+    not_recommended_movies = set()
+    non_common_movies = {}
+    good_rate = 10
+    bad_rate = 1
+    rate_change = 0
+
+    for item in dataset[person2]:
+        if item not in dataset[person1]:
+            non_common_movies[item] = 1
+
+    if score_type == "Pearson":
+        # Przechodzimy przez wszystkie filmy, zaczynając od "dobrych" ocen
+        while len(not_recommended_movies) < 5:
+            for item in non_common_movies:
+                # Jeśli ocena jest większa lub równa good_rate - rate_change, dodajemy film do listy
+                if dataset[person2][item] >= good_rate - rate_change:
+                    not_recommended_movies.add(item)
+                if len(not_recommended_movies) == 5:
+                    break
+
+            # Jeśli lista nie jest pełna po przejściu przez wszystkie filmy, zmniejszamy rate_change
+            if len(not_recommended_movies) < 5:
+                rate_change += 1  # Zmniejszamy good_rate o 1
+
+    else:
+        # Przechodzimy przez wszystkie filmy, zaczynając od "złych" ocen
+        while len(not_recommended_movies) < 5:
+            for item in non_common_movies:
+                # Jeśli ocena jest mniejsza lub równa bad_rate - rate_change, dodajemy film do listy
+                if dataset[person2][item] <= bad_rate + rate_change:
+                    not_recommended_movies.add(item)
+                if len(not_recommended_movies) == 5:
+                    break
+
+            # Jeśli lista nie jest pełna po przejściu przez wszystkie filmy, zmniejszamy rate_change
+            if len(not_recommended_movies) < 5:
+                rate_change += 1  # Zmieniamy wartość bad_rate (zwiększamy ją)
+
+    print(not_recommended_movies)
+    return not_recommended_movies
+
+
+if __name__=='__main__':
+    #Przypisywanie pobranych danych od użytkownika do zmiennych
+    args = build_arg_parser().parse_args()
+    person1 = args.person1
+    person2 = args.person2
+    score_type = args.score_type
+
+    #Zbiór danych, który używamy
+    ratings_file = 'ratings.json'
+
+    with open(ratings_file, 'r') as f:
+        data = json.loads(f.read())
+
+    if person2 is None:
+        #Wywołanie funkcji, która porównuje jednego użytkownika do wszystkich
+        #Zwraca słownik z osobami oraz wynikiem, w porównaniu do person1
+        similarity_scores = compare_to_all(data, person1, score_type)
+        if score_type == "Euclidean":
+            best_match = min(similarity_scores, key=similarity_scores.get)
+            #Zwraca osobe, ktora ma najlepszy wynik z person1
+            person2 = best_match
+            print(person2)
+            recommended_movies(data, person1, person2, score_type)
+            not_recommended_movies(data, person1, person2,score_type)
+        #Jeżeli używamy persona to rekomendacją będą filmy, które komuś się nie podobały
+        #A anty rekomendacją będą filmy, które się komuś podobały
+        else:
+            worst_match = max(similarity_scores, key=similarity_scores.get)
+            # Zwraca osobe, ktora ma najgorszy wynik z person1
+            person2 = worst_match
+            print(person2)
+            recommended_movies(data, person1, person2, score_type)
+            not_recommended_movies(data, person1, person2,score_type)
+
+    else:
+        if score_type == 'Euclidean':
+            print("\nEuclidean score:")
+            score = euclidean_score(data, person1, person2)
+            print(score)
+
+        else:
+            print("\nPearson score:")
+            print(pearson_score(data, person1, person2))
+
