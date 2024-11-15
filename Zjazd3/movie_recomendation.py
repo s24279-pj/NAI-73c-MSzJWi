@@ -119,21 +119,32 @@ def compare_to_top_n(dataset, person, score_type, n=3, threshold=0.1):
 
         similarity_scores[other_person] = score
 
-    # Sortowanie wyników (od najlepszych do najgorszych dla Euclidean, odwrotnie dla Pearson)
-    sorted_scores = sorted(similarity_scores.items(), key=lambda x: x[1], reverse=(score_type == "Pearson"))
+        # Sortowanie wyników (od najlepszych do najgorszych dla Euclidean, odwrotnie dla Pearson)
+        sorted_scores = sorted(similarity_scores.items(), key=lambda x: x[1], reverse=(score_type == "Pearson"))
 
-    # Wybieranie do N najlepiej dopasowanych osób z filtrowaniem
-    best_score = sorted_scores[0][1]
-    top_matches = [sorted_scores[0]]  # Zawsze uwzględniamy najlepszego
+        # Wybieranie do N najlepiej dopasowanych osób z filtrowaniem
+        best_score = sorted_scores[0][1]
+        top_matches = [sorted_scores[0]]  # Zawsze uwzględniamy najlepszego
 
-    for other_person, score in sorted_scores[1:]:
-        if abs(score - best_score) <= threshold and len(top_matches) < n:
-            top_matches.append((other_person, score))
-        if len(top_matches) >= n:
-            break
+        for other_person, score in sorted_scores[1:]:
+            # Oblicz różnicę między wynikiem danej osoby a najlepszym wynikiem
+            score_diff = abs(score - best_score)
 
-    return [person for person, score in top_matches]
+            # Sprawdź, czy różnica w wynikach jest mniejsza lub równa progowi
+            is_similar = score_diff <= threshold
+            
+            # Sprawdź, czy mamy jeszcze miejsce na dodanie osoby do top_matches
+            has_space_for_more = len(top_matches) < n
 
+            # Jeśli osoba jest wystarczająco podobna do najlepszej i jest miejsce na dodanie, to dodajemy ją
+            if is_similar and has_space_for_more:
+                top_matches.append((other_person, score))
+
+            # Jeśli osiągnęliśmy limit najlepszych dopasowań, przerywamy pętlę
+            if len(top_matches) >= n:
+                break
+
+    return [person for person, _ in top_matches]
 
 # Funkcja do rekomendowania filmów na podstawie wyników podobieństwa
 def recommended_movies(dataset, person1, person2, score_type):
