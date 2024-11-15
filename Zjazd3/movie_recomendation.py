@@ -235,7 +235,9 @@ if __name__=='__main__':
             #Zwraca osobe, ktora ma najlepszy wynik z person1
             person2 = best_match
             print(person2)
+            print("\nRecommended movies:")
             recommended_movies(data, person1, person2, score_type)
+            print("\nNot recommended movies:")
             not_recommended_movies(data, person1, person2,score_type)
         #Jeżeli używamy persona to rekomendacją będą filmy, które komuś się nie podobały
         #A anty rekomendacją będą filmy, które się komuś podobały
@@ -244,7 +246,9 @@ if __name__=='__main__':
             # Zwraca osobe, ktora ma najgorszy wynik z person1
             person2 = worst_match
             print(person2)
+            print("\nRecommended movies:")
             recommended_movies(data, person1, person2, score_type)
+            print("\nNot recommended movies:")
             not_recommended_movies(data, person1, person2,score_type)
 
     else:
