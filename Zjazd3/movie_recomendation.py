@@ -2,6 +2,12 @@ import argparse
 import json
 import numpy as np
 
+#####################################
+#                                   #
+#   Marta Szpilka, Jakub Więcek     #
+#                                   #
+#####################################
+
 #pobieranie danych z terminala, używając parsowania (argparse) sprawdzamy czy dane zostaly podane oraz
 # walidujemy dane
 def build_arg_parser():
