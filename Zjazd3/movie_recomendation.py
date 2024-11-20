@@ -258,7 +258,6 @@ if __name__=='__main__':
 
         # Zbiór filmów na podstawie Euclidean
         if score_type == "Euclidean":
-            print(similarity_scores)
             for match in similarity_scores:
                 all_recommended.update(recommended_movies(data, person1, match, score_type))
                 all_not_recommended.update(not_recommended_movies(data, person1, match, score_type))
@@ -274,7 +273,6 @@ if __name__=='__main__':
 
         # Zbiór filmów na podstawie Pearson
         elif score_type == "Pearson":
-            print(similarity_scores)
             for match in similarity_scores:
                 all_not_recommended.update(recommended_movies(data, person1, match, score_type))
                 all_recommended.update(not_recommended_movies(data, person1, match, score_type))
