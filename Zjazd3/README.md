@@ -88,8 +88,21 @@ The dataset is in JSON format and follows this structure:
 ## Examples
 Here are some examples of how the system works:
 
-### Example: Similarity Scores
+### Example 1: Similarity Scores
 1. Example
+![FirstExample](images/m_recomendaction_e.png)
+
+### Example 2: Comparing Two Users
+1. Example
+![SecondExample](images/m_recomendaction_two.png)
+
+## Authors
+
+Marta Szpilka
+
+Jakub Więcek
+
+
 
 
 
