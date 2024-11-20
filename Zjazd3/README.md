@@ -86,9 +86,10 @@ The dataset is in JSON format and follows this structure:
 ```
 
 ## Examples
-Here is example of how the system works:
+Here are some examples of how the system works:
 
 ### Example: Similarity Scores
+1. Example
 
 
 
