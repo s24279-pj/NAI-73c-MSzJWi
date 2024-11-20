@@ -83,3 +83,18 @@ The dataset is in JSON format and follows this structure:
     "Movie3": 9
   }
 }
+```
+
+## Examples
+Here is example of how the system works:
+
+### Example: Similarity Scores
+
+
+
+
+
+
+
+
+
