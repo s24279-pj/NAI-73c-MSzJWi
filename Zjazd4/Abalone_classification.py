@@ -2,11 +2,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn import svm
 from sklearn.datasets import fetch_openml
+from sklearn.metrics import confusion_matrix, accuracy_score, classification_report
 
 # Pobieramy zbiór danych Abalone z OpenML
 abalone = fetch_openml(name='abalone', version=1, as_frame=True)
 
 # Wybieramy dwie cechy: długość (Length) i średnicę (Diameter) muszli
+# Wybieramy dwie cechy, aby łatwiej przedstawić dane na dwuwymiarowym wykresie
 X = abalone.data[['Length', 'Diameter']].values
 
 # Celem jest przewidywanie liczby pierścieni ('Rings') w muszli
@@ -17,16 +19,16 @@ y = abalone.target.astype(int)
 def classify_age(rings):
     """
     Funkcja klasyfikuje muszle na trzy grupy wiekowe:
-    0 - Młody (wiek <= 10)
-    1 - Średni wiek (10 < wiek <= 15)
-    2 - Stary (wiek > 15)
+    0 - Młody (wiek <= 6)
+    1 - Średni wiek (10 < wiek <= 12)
+    2 - Stary (wiek > 12)
 
     :param rings: liczba pierścieni w muszli
     :return: numer klasy wiekowej (0, 1, lub 2)
     """
-    if rings + 1.5 <= 10:
+    if rings + 1.5 <= 6:
         return 0  # Młody
-    elif rings + 1.5 <= 15:
+    elif rings + 1.5 <= 12:
         return 1  # Średni wiek
     else:
         return 2  # Stary
@@ -36,17 +38,19 @@ def classify_age(rings):
 y_classified = np.array([classify_age(r) for r in y])
 
 # Tworzymy model SVM z jądrem RBF (radial basis function)
-svc = svm.SVC(kernel='rbf', C=1, gamma=100).fit(X, y_classified)
+svc = svm.SVC(kernel='rbf', C=1, gamma=50).fit(X, y_classified)
 
-# Zakres danych: rozszerzamy go o 0.3 jednostki, aby uzyskać przestrzeń dla granic decyzyjnych
-x_min, x_max = X[:, 0].min() - 0.3, X[:, 0].max() + 0.3
-y_min, y_max = X[:, 1].min() - 0.3, X[:, 1].max() + 0.3
+# Zakres danych: rozszerzamy go o 0.2 jednostki, aby uzyskać przestrzeń dla granic decyzyjnych
+x_min, x_max = X[:, 0].min() - 0.2, X[:, 0].max() + 0.2
+y_min, y_max = X[:, 1].min() - 0.2, X[:, 1].max() + 0.2
 h = (x_max - x_min) / 100  # Rozdzielczość wykresu
 xx, yy = np.meshgrid(np.arange(x_min, x_max, h),
                      np.arange(y_min, y_max, h))
 
 # Predykcja na siatce punktów
 plt.subplot(1, 1, 1)
+#Przewidywanie klas na siatce punktów w celu wizualizacji granic decyzyjnych.
+#ravel() spłaszcza siatkę (macierz) do wektora.
 Z = svc.predict(np.c_[xx.ravel(), yy.ravel()])
 Z = Z.reshape(xx.shape)
 
@@ -54,7 +58,7 @@ Z = Z.reshape(xx.shape)
 plt.contourf(xx, yy, Z, cmap=plt.cm.Paired, alpha=0.8)
 
 # Rysowanie punktów danych z przypisanymi kolorami dla trzech klas
-scatter = plt.scatter(X[:, 0], X[:, 1], c=y_classified, cmap=plt.cm.Paired)
+scatter = plt.scatter(X[:, 0], X[:, 1], c=y_classified, cmap=plt.cm.Paired,edgecolors='k')
 
 # Etykiety osi i tytuł wykresu
 plt.xlabel('Abalone Length')
@@ -68,3 +72,21 @@ plt.legend(handles, ['Young', 'Middle Age', 'Old'])
 
 # Wyświetlanie wykresu
 plt.show()
+
+# Wywołanie klasyfikatora dla przykładowych danych wejściowych
+sample_data = np.array([[0.53, 0.65]])
+predicted_class = svc.predict(sample_data)
+age_labels = ['Young', 'Middle Age', 'Old']
+print(f"Predicted class for sample data {sample_data[0]}: {age_labels[predicted_class[0]]}")
+
+# Przewidywanie klas dla całego zbioru danych
+y_pred = svc.predict(X)
+
+# Wyświetlenie macierzy konfuzji
+conf_matrix = confusion_matrix(y_classified, y_pred)
+print("Confusion Matrix:")
+print(conf_matrix)
+
+# Obliczenie dokładności klasyfikacji
+accuracy = accuracy_score(y_classified, y_pred)
+print(f"Accuracy: {accuracy:.2f}")
