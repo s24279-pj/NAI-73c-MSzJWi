@@ -4,11 +4,11 @@ import matplotlib.pyplot as plt
 def visualize_classifier(classifier, X, y, title=''):
     # Define the minimum and maximum values for X and Y
     # that will be used in the mesh grid
-    min_x, max_x = X[:, 0].min() - 0.2, X[:, 0].max() + 0.2
-    min_y, max_y = X[:, 1].min() - 0.2, X[:, 1].max() + 0.2
+    min_x, max_x = X[:, 0].min() - 5, X[:, 0].max() + 5
+    min_y, max_y = X[:, 1].min() - 20, X[:, 1].max() + 20
 
-    # Define the step size to use in plotting the mesh grid 
-    mesh_step_size = 0.01
+    # Define the step size to use in plotting the mesh grid
+    mesh_step_size = 1
 
     # Define the mesh grid of X and Y values
     x_vals, y_vals = np.meshgrid(np.arange(min_x, max_x, mesh_step_size), np.arange(min_y, max_y, mesh_step_size))
@@ -25,10 +25,10 @@ def visualize_classifier(classifier, X, y, title=''):
     # Specify the title
     plt.title(title)
 
-    # Choose a color scheme for the plot 
+    # Choose a color scheme for the plot
     plt.pcolormesh(x_vals, y_vals, output, cmap=plt.cm.gray)
 
-    # Overlay the training points on the plot 
+    # Overlay the training points on the plot
     plt.scatter(X[:, 0], X[:, 1], c=y, s=75, edgecolors='black', linewidth=1, cmap=plt.cm.Paired)
 
     # Specify the boundaries of the plot
@@ -36,7 +36,7 @@ def visualize_classifier(classifier, X, y, title=''):
     plt.ylim(y_vals.min(), y_vals.max())
 
     # Specify the ticks on the X and Y axes
-    plt.xticks((np.arange(int(X[:, 0].min() - 0.2), int(X[:, 0].max() + 1), 0.2)))
-    plt.yticks((np.arange(int(X[:, 1].min() - 0.2), int(X[:, 1].max() + 1), 0.2)))
+    plt.xticks((np.arange(int(X[:, 0].min() - 5), int(X[:, 0].max() + 5), 5)))
+    plt.yticks((np.arange(int(X[:, 1].min() - 20), int(X[:, 1].max() + 20), 100)))
 
     plt.show()

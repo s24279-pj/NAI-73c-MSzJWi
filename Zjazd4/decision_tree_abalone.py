@@ -20,14 +20,14 @@ y = abalone.target.astype(int)
 def classify_age(rings):
     """
     Funkcja klasyfikuje muszle na trzy grupy wiekowe:
-    0 - Młody (wiek <= 6)
-    1 - Średni wiek (10 < wiek <= 12)
+    0 - Młody (wiek <= 8)
+    1 - Średni wiek (8 < wiek <= 12)
     2 - Stary (wiek > 12)
 
     :param rings: liczba pierścieni w muszli
     :return: numer klasy wiekowej (0, 1, lub 2)
     """
-    if rings + 1.5 <= 6:
+    if rings + 1.5 <= 8:
         return 0  # Młody 's'
     elif rings + 1.5 <= 12:
         return 1  # Średni wiek 'x'
@@ -37,6 +37,7 @@ def classify_age(rings):
 
 # Stosujemy funkcję do podziału na klasy wiekowe
 y_classified = np.array([classify_age(r) for r in y])
+
 class_0 = np.array(X[y_classified==0])
 class_1 = np.array(X[y_classified==1])
 class_2 = np.array(X[y_classified==2])
@@ -54,9 +55,9 @@ plt.legend()
 
 # Podział bazy danych na zbiór testowy i treningowy
 X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.25, random_state=42)
+        X, y_classified, test_size=0.25, random_state=42)
 
-params = {'random_state': 42, 'max_depth': 8}
+params = {'random_state': 42, 'max_depth': 16}
 classifier = DecisionTreeClassifier(**params)
 classifier.fit(X_train, y_train)
 visualize_classifier(classifier, X_train, y_train, 'Training dataset')
@@ -64,7 +65,7 @@ visualize_classifier(classifier, X_train, y_train, 'Training dataset')
 y_test_pred = classifier.predict(X_test)
 visualize_classifier(classifier, X_test, y_test, 'Test dataset')
 
-class_names = ['Class-0', 'Class-1', 'Class-2']
+class_names = ['Young', 'Middle Age', 'Old']
 print("\n" + "#"*40)
 print("\nClassifier performance on training dataset\n")
 print(classification_report(y_train, classifier.predict(X_train), target_names=class_names))
