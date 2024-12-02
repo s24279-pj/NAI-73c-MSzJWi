@@ -19,14 +19,14 @@ y = abalone.target.astype(int)
 def classify_age(rings):
     """
     Funkcja klasyfikuje muszle na trzy grupy wiekowe:
-    0 - Młody (wiek <= 6)
-    1 - Średni wiek (10 < wiek <= 12)
+    0 - Młody (wiek <= 8)
+    1 - Średni wiek (8 < wiek <= 12)
     2 - Stary (wiek > 12)
 
     :param rings: liczba pierścieni w muszli
     :return: numer klasy wiekowej (0, 1, lub 2)
     """
-    if rings + 1.5 <= 6:
+    if rings + 1.5 <= 8:
         return 0  # Młody
     elif rings + 1.5 <= 12:
         return 1  # Średni wiek
