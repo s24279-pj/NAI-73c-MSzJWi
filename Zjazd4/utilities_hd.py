@@ -26,11 +26,17 @@ def visualize_classifier(classifier, X, y, title=''):
     plt.title(title)
 
     # Choose a color scheme for the plot
-    plt.pcolormesh(x_vals, y_vals, output, cmap=plt.cm.gray)
+    plt.pcolormesh(x_vals, y_vals, output, cmap=plt.cm.Paired)
 
     # Overlay the training points on the plot
-    plt.scatter(X[:, 0], X[:, 1], c=y, s=75, edgecolors='black', linewidth=1, cmap=plt.cm.Paired)
+    scatter = plt.scatter(X[:, 0], X[:, 1], c=y, s=75, edgecolors='black', linewidth=1, cmap=plt.cm.Paired)
 
+    legend_labels = ['Healthy', 'Diseased']  # Odpowiednie etykiety dla wartości 0 i 1
+    handles, labels = scatter.legend_elements()
+    plt.legend(handles, legend_labels, title="Condition")
+
+    plt.xlabel('Age')
+    plt.ylabel('Cholesterol')
     # Specify the boundaries of the plot
     plt.xlim(x_vals.min(), x_vals.max())
     plt.ylim(y_vals.min(), y_vals.max())

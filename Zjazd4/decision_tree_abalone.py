@@ -38,10 +38,13 @@ def classify_age(rings):
 # Stosujemy funkcję do podziału na klasy wiekowe
 y_classified = np.array([classify_age(r) for r in y])
 
+
+# Podział danych według klas wiekowych
 class_0 = np.array(X[y_classified==0])
 class_1 = np.array(X[y_classified==1])
 class_2 = np.array(X[y_classified==2])
 
+# Wizualizacja danych wejściowych
 plt.figure()
 plt.scatter(class_0[:, 0], class_0[:, 1], s=75, facecolors='white', edgecolors='black',
             linewidth=1, marker='s', label='Young')
@@ -57,14 +60,19 @@ plt.legend()
 X_train, X_test, y_train, y_test = train_test_split(
         X, y_classified, test_size=0.25, random_state=42)
 
+# Konfiguracja i trening klasyfikatora drzewa decyzyjnego
 params = {'random_state': 42, 'max_depth': 16}
 classifier = DecisionTreeClassifier(**params)
+
+# Wizualizacja klasyfikacji na zbiorze treningowym
 classifier.fit(X_train, y_train)
 visualize_classifier(classifier, X_train, y_train, 'Training dataset')
 
+# Predykcja i wizualizacja na zbiorze testowym
 y_test_pred = classifier.predict(X_test)
 visualize_classifier(classifier, X_test, y_test, 'Test dataset')
 
+# Wyświetlenie raportu z wynikami klasyfikacji
 class_names = ['Young', 'Middle Age', 'Old']
 print("\n" + "#"*40)
 print("\nClassifier performance on training dataset\n")
