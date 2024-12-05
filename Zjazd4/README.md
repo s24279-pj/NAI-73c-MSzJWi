@@ -44,7 +44,7 @@ You can install them using `pip`:
 ```bash
 pip install numpy matplotlib pandas scikit-learn
 ```
-### Running the Scripts
+### Running the Scripts and Example Output
 
 #### SVC Classifier for Abalone Dataset:
 
@@ -81,6 +81,14 @@ Command:
 ```
 python heart_disease_decision_tree.py
 ```
+
+### Evaluation Metrics
+
+For each classifier, the following evaluation metrics are computed:
+
+- **Confusion Matrix**: A matrix showing the counts of true positive, false positive, true negative, and false negative classifications.
+- **Accuracy**: The ratio of correct predictions to total predictions.
+- **Classification Report**: Precision, recall, and F1-score for each class.
 
 ## Authors
 
