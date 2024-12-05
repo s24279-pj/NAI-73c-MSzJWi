@@ -60,7 +60,7 @@ Run the script `abalone_svc.py` to train and visualize an SVC classifier with an
 
 Command:
 ```
-python abalone_svc.py
+python abalone_classification.py
 ```
 ### Axis Visualization
 ![Axisvisualization](images/abalone_svc.png)
@@ -73,7 +73,7 @@ Run the script `abalone_decision_tree.py` to train and visualize a decision tree
 
 Command:
 ```
-python abalone_decision_tree.py
+python decision_tree_abalone.py
 ```
 
 ### Axis Visualization
@@ -89,7 +89,7 @@ Run the script `heart_disease_svc.py` to train and visualize an SVC classifier o
 
 Command:
 ```
-python heart_disease_svc.py
+python heart_disease_classification.py
 ```
 
 ### Axis Visualization 
@@ -104,7 +104,7 @@ Run the script `heart_disease_decision_tree.py` to train and visualize a decisio
 
 Command:
 ```
-python heart_disease_decision_tree.py
+python decision_tree_heart_disease.py
 ```
 
 ### Axis Visualization 
