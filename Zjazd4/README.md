@@ -18,8 +18,9 @@ Both algorithms are used for classification tasks on two datasets:
 - `abalone_decision_tree.py`: Decision tree classifier for the Abalone dataset.
 - `heart_disease_svc.py`: SVC classifier for the Heart Disease dataset.
 - `heart_disease_decision_tree.py`: Decision tree classifier for the Heart Disease dataset.
-- `utilities_hd.py`: Utility functions for visualizing decision boundaries of classifiers.
-- `heart.csv`: Heart disease dataset containing features like age and cholesterol levels.
+- `utilities.py`: Utility functions for visualizing decision boundaries of classifiers for Abalone dataset.
+- `utilities_hd.py`: Utility functions for visualizing decision boundaries of classifiers for Heart Disease dataset.
+- `heart.csv`: Heart disease dataset.
 - README.md: Documentation for the project (this file).
 
 ### Datasets
@@ -42,7 +43,7 @@ You can install them using `pip`:
 
 ```bash
 pip install numpy matplotlib pandas scikit-learn
-
+```
 
 ## Authors
 
