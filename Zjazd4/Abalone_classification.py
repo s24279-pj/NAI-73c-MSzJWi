@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from sklearn import svm
 from sklearn.datasets import fetch_openml
 from sklearn.metrics import confusion_matrix, accuracy_score, classification_report
+from utilities import visualize_classifier
 
 # Pobieramy zbiór danych Abalone z OpenML
 abalone = fetch_openml(name='abalone', version=1, as_frame=True)
@@ -40,38 +41,8 @@ y_classified = np.array([classify_age(r) for r in y])
 # Tworzymy model SVM z jądrem RBF (radial basis function)
 svc = svm.SVC(kernel='rbf', C=1, gamma=50).fit(X, y_classified)
 
-# Zakres danych: rozszerzamy go o 0.2 jednostki, aby uzyskać przestrzeń dla granic decyzyjnych
-x_min, x_max = X[:, 0].min() - 0.2, X[:, 0].max() + 0.2
-y_min, y_max = X[:, 1].min() - 0.2, X[:, 1].max() + 0.2
-h = (x_max - x_min) / 100  # Rozdzielczość wykresu
-xx, yy = np.meshgrid(np.arange(x_min, x_max, h),
-                     np.arange(y_min, y_max, h))
-
-# Predykcja na siatce punktów
-plt.subplot(1, 1, 1)
-#Przewidywanie klas na siatce punktów w celu wizualizacji granic decyzyjnych.
-#ravel() spłaszcza siatkę (macierz) do wektora.
-Z = svc.predict(np.c_[xx.ravel(), yy.ravel()])
-Z = Z.reshape(xx.shape)
-
-# Rysowanie granic decyzyjnych z 3 klasami
-plt.contourf(xx, yy, Z, cmap=plt.cm.Paired, alpha=0.8)
-
-# Rysowanie punktów danych z przypisanymi kolorami dla trzech klas
-scatter = plt.scatter(X[:, 0], X[:, 1], c=y_classified, cmap=plt.cm.Paired,edgecolors='k')
-
-# Etykiety osi i tytuł wykresu
-plt.xlabel('Abalone Length')
-plt.ylabel('Abalone Diameter')
-plt.xlim(xx.min(), xx.max())  # Dostosowanie granic osi x
-plt.title('SVC with RBF kernel (Age Classification)')
-
-# Dodanie legendy, która opisuje klasy wiekowe
-handles, labels = scatter.legend_elements()
-plt.legend(handles, ['Young', 'Middle Age', 'Old'])
-
-# Wyświetlanie wykresu
-plt.show()
+# Wizualizacja klasyfikatora
+visualize_classifier(svc, X, y_classified, 'SVC with RBF kernel (Age Classification)')
 
 # Wywołanie klasyfikatora dla przykładowych danych wejściowych
 sample_data = np.array([[0.53, 0.65]])

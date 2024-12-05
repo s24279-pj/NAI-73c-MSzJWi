@@ -26,10 +26,19 @@ def visualize_classifier(classifier, X, y, title=''):
     plt.title(title)
 
     # Choose a color scheme for the plot 
-    plt.pcolormesh(x_vals, y_vals, output, cmap=plt.cm.gray)
+    plt.pcolormesh(x_vals, y_vals, output, cmap=plt.cm.Paired)
 
     # Overlay the training points on the plot 
-    plt.scatter(X[:, 0], X[:, 1], c=y, s=75, edgecolors='black', linewidth=1, cmap=plt.cm.Paired)
+    scatter = plt.scatter(X[:, 0], X[:, 1], c=y, s=75, edgecolors='black', linewidth=1, cmap=plt.cm.Paired)
+
+    # Etykiety osi i tytuł wykresu
+    plt.xlabel('Abalone Length')
+    plt.ylabel('Abalone Diameter')
+    plt.title('SVC with RBF kernel (Age Classification)')
+
+    # Dodanie legendy, która opisuje klasy wiekowe
+    handles, labels = scatter.legend_elements()
+    plt.legend(handles, ['Young', 'Middle Age', 'Old'])
 
     # Specify the boundaries of the plot
     plt.xlim(x_vals.min(), x_vals.max())
