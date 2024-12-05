@@ -1,4 +1,4 @@
-# README: SVC and Decision Tree Classifiers
+# SVC and Decision Tree Classifiers
 
 ## Project Description
 
