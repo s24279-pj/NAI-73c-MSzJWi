@@ -1,8 +1,7 @@
 import numpy as np
-import matplotlib.pyplot as plt
 from sklearn import svm
 from sklearn.datasets import fetch_openml
-from sklearn.metrics import confusion_matrix, accuracy_score, classification_report
+from sklearn.metrics import confusion_matrix
 from utilities import visualize_classifier
 
 # Pobieramy zbiór danych Abalone z OpenML
