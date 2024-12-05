@@ -44,6 +44,43 @@ You can install them using `pip`:
 ```bash
 pip install numpy matplotlib pandas scikit-learn
 ```
+### Running the Scripts
+
+#### SVC Classifier for Abalone Dataset:
+
+Run the script `abalone_svc.py` to train and visualize an SVC classifier with an RBF kernel on the Abalone dataset. The classifier classifies the age of abalones into three categories: young, middle-aged, and old, based on their length and diameter.
+
+Command:
+```
+python abalone_svc.py
+```
+
+#### Decision Tree Classifier for Abalone Dataset:
+
+Run the script `abalone_decision_tree.py` to train and visualize a decision tree classifier on the Abalone dataset. This classifier also aims to classify abalones based on their age group (young, middle-aged, and old) using the length and diameter features.
+
+Command:
+```
+python abalone_decision_tree.py
+```
+
+#### SVC Classifier for Heart Disease Dataset:
+
+Run the script `heart_disease_svc.py` to train and visualize an SVC classifier on the Heart Disease dataset. The classifier predicts whether a patient has heart disease or not based on features such as age and cholesterol levels.
+
+Command:
+```
+python heart_disease_svc.py
+```
+
+#### Decision Tree Classifier for Heart Disease Dataset:
+
+Run the script `heart_disease_decision_tree.py` to train and visualize a decision tree classifier on the Heart Disease dataset. This classifier also predicts whether a patient is healthy or diseased based on age and cholesterol levels.
+
+Command:
+```
+python heart_disease_decision_tree.py
+```
 
 ## Authors
 
