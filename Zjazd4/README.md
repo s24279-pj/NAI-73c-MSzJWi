@@ -44,7 +44,15 @@ You can install them using `pip`:
 ```bash
 pip install numpy matplotlib pandas scikit-learn
 ```
-### Running the Scripts and Example Output
+### Evaluation Metrics
+
+For each classifier, the following evaluation metrics are computed:
+
+- **Confusion Matrix**: A matrix showing the counts of true positive, false positive, true negative, and false negative classifications.
+- **Accuracy**: The ratio of correct predictions to total predictions.
+- **Classification Report**: Precision, recall, and F1-score for each class.
+  
+### Running the Scripts and outputs
 
 #### SVC Classifier for Abalone Dataset:
 
@@ -54,6 +62,10 @@ Command:
 ```
 python abalone_svc.py
 ```
+### Axis Visualization
+![Axisvisualization](images/abalone_svc.png)
+### Output
+![SampleData](images/abalone_svc1.png)
 
 #### Decision Tree Classifier for Abalone Dataset:
 
@@ -64,6 +76,13 @@ Command:
 python abalone_decision_tree.py
 ```
 
+### Axis Visualization
+![Axisvisualization](images/abalone_t1.png)
+![Axisvisualization](images/abalone_t.png)
+
+### Output
+![Classifierperformance](images/abalone_t2.png)
+
 #### SVC Classifier for Heart Disease Dataset:
 
 Run the script `heart_disease_svc.py` to train and visualize an SVC classifier on the Heart Disease dataset. The classifier predicts whether a patient has heart disease or not based on features such as age and cholesterol levels.
@@ -72,6 +91,12 @@ Command:
 ```
 python heart_disease_svc.py
 ```
+
+### Axis Visualization 
+![Axisvisualization](images/hd_svc1.png)
+
+### Output
+![Axisvisualization](images/hd_svc.png)
 
 #### Decision Tree Classifier for Heart Disease Dataset:
 
@@ -82,13 +107,12 @@ Command:
 python heart_disease_decision_tree.py
 ```
 
-### Evaluation Metrics
+### Axis Visualization 
+![Axisvisualization](images/hd_t2.png)
+![Axisvisualization](images/hd_t.png)
 
-For each classifier, the following evaluation metrics are computed:
-
-- **Confusion Matrix**: A matrix showing the counts of true positive, false positive, true negative, and false negative classifications.
-- **Accuracy**: The ratio of correct predictions to total predictions.
-- **Classification Report**: Precision, recall, and F1-score for each class.
+### Output
+![Classifierperformance](images/hd_t1.png)
 
 ## Authors
 
