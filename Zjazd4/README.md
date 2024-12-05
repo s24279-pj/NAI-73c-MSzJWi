@@ -14,10 +14,10 @@ Both algorithms are used for classification tasks on two datasets:
 
 ### Files and Scripts
 
-- `abalone_svc.py`: SVC classifier for the Abalone dataset.
-- `abalone_decision_tree.py`: Decision tree classifier for the Abalone dataset.
-- `heart_disease_svc.py`: SVC classifier for the Heart Disease dataset.
-- `heart_disease_decision_tree.py`: Decision tree classifier for the Heart Disease dataset.
+- `abalone_classification.py`: SVC classifier for the Abalone dataset.
+- `decision_tree_abalone.py`: Decision tree classifier for the Abalone dataset.
+- `heart_disease_classification.py`: SVC classifier for the Heart Disease dataset.
+- `decision_tree_heart_disease.py`: Decision tree classifier for the Heart Disease dataset.
 - `utilities.py`: Utility functions for visualizing decision boundaries of classifiers for Abalone dataset.
 - `utilities_hd.py`: Utility functions for visualizing decision boundaries of classifiers for Heart Disease dataset.
 - `heart.csv`: Heart disease dataset.
