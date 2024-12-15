@@ -31,8 +31,9 @@ def main():
 
     # Kompilacja modeli
     optimizer1 = tf.keras.optimizers.Adam(learning_rate=0.0001)
+    optimizer2 = tf.keras.optimizers.Adam(learning_rate=0.0001)
     model_1.compile(optimizer=optimizer1, loss='sparse_categorical_crossentropy', metrics=['accuracy'])
-    model_2.compile(optimizer=optimizer1, loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+    model_2.compile(optimizer=optimizer2, loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
     # Trening obu modeli
     print("Trening modelu 1...")

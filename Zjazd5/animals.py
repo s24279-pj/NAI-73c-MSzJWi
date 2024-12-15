@@ -1,6 +1,4 @@
 import tensorflow as tf
-
-import tensorflow as tf
 import numpy as np
 
 def confusion_matrix(y_true, y_pred, num_classes):
