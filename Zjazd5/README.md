@@ -7,6 +7,7 @@ This project demonstrates the use of neural networks for two distinct tasks:
 1. **Animal Image Classification**: A convolutional neural network (CNN) is applied to classify images of animals from the CIFAR-10 dataset.
 2. **Clothing Image Classification**: A CNN is used for classifying images of clothing from the Fashion MNIST dataset.
 3. **Heart Disease Prediction**: A feedforward neural network (FNN) is used to predict the presence of heart disease based on patient data.
+4. **Tom and Jerry Image Classification**: A CNN is used to classify images from the "Tom and Jerry" dataset. This model can identify whether the image contains Tom, Jerry, both, or neither. The dataset is available from [Kaggle: Tom and Jerry Image Classification](https://www.kaggle.com/datasets/balabaskar/tom-and-jerry-image-classification/data).
 
 Each model is evaluated using various performance metrics such as accuracy, loss, confusion matrix, and classification reports.
 
@@ -18,6 +19,7 @@ Each model is evaluated using various performance metrics such as accuracy, loss
 - `clothes.py`: Classifies images from the Fashion MNIST dataset using two different CNN architectures (small and large).
 - `heart_disease.py`: Predicts heart disease presence using a feedforward neural network. The dataset used contains various medical attributes like age, cholesterol level, and more.
 - `heart.csv`: CSV file containing patient data for the heart disease classification task.
+- `tom_and_jerry.py`: Classifies images from the "Tom and Jerry" dataset. It uses a CNN to predict whether the image contains Tom, Jerry, both, or neither.
 - README.md: Documentation for the project (this file).
 
 ### Datasets
@@ -26,6 +28,12 @@ Each model is evaluated using various performance metrics such as accuracy, loss
    - Animal classes: bird, cat, deer, dog, frog, and horse.
 2. **Fashion MNIST Dataset**: A dataset of 60,000 28x28 grayscale images of 10 clothing items.
 3. **Heart Disease Dataset**: A dataset of 303 records with 14 features used to predict the presence or absence of heart disease.
+4. **Tom and Jerry Dataset**: A dataset containing images of Tom and Jerry characters. The task is to classify images into four categories: 
+   - Tom
+   - Jerry
+   - Both Tom and Jerry
+   - Neither Tom nor Jerry
+   The dataset can be downloaded from [Kaggle: Tom and Jerry Image Classification](https://www.kaggle.com/datasets/balabaskar/tom-and-jerry-image-classification/data).
 
 ## Usage
 
