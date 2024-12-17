@@ -9,7 +9,7 @@ This project demonstrates the use of neural networks for two distinct tasks:
 3. **Heart Disease Prediction**: A feedforward neural network (FNN) is used to predict the presence of heart disease based on patient data.
 4. **Tom and Jerry Image Classification**: A CNN is used to classify images from the "Tom and Jerry" dataset. This model can identify whether the image contains Tom, Jerry, both, or neither. The dataset is available from [Kaggle: Tom and Jerry Image Classification](https://www.kaggle.com/datasets/balabaskar/tom-and-jerry-image-classification/data).
 
-Each model is evaluated using various performance metrics such as accuracy, loss, confusion matrix, and classification reports.
+Each model is evaluated using various performance metrics such as accuracy, loss and confusion matrix.
 
 ## Project Structure
 
