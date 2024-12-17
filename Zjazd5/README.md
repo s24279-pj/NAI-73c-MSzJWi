@@ -79,7 +79,7 @@ The script will display:
 
 Run the script `clothes.py` to classify images of clothing from the Fashion MNIST dataset. This script uses two models with different architectures (small and large) for classification.
 
-#### Command to run the small model:
+#### Command:
 ```bash
 python clothes.py
 ```
