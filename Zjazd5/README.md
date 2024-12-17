@@ -35,14 +35,13 @@ To run the scripts, make sure you have the following Python packages installed:
 
 - `numpy`
 - `tensorflow`
-- `scikit-learn`
 - `matplotlib`
 - `pandas`
 
 You can install them using `pip`:
 
 ```bash
-pip install numpy tensorflow scikit-learn matplotlib pandas
+pip install numpy tensorflow matplotlib pandas
 ```
 
 ### Evaluation Metrics
@@ -51,7 +50,6 @@ For each model, the following evaluation metrics are computed:
 
 - **Confusion Matrix**: A matrix showing the counts of true positive, false positive, true negative, and false negative classifications.
 - **Accuracy**: The ratio of correct predictions to total predictions.
-- **Classification Report**: Precision, recall, and F1-score for each class.
 
 ## Running the Scripts
 
@@ -68,7 +66,6 @@ python animals.py
 The script will display:
 - The model's accuracy and loss on the test dataset.
 - The confusion matrix for the predictions.
-- A classification report showing precision, recall, and F1-score for each animal class.
 
 ### Clothing Image Classification (Fashion MNIST)
 
@@ -82,7 +79,6 @@ python clothes.py
 #### Output
 - Displays accuracy and loss for both models.
 - Prints confusion matrices for both models.
-- Displays classification reports for both models.
 
 ### Heart Disease Prediction
 
@@ -95,7 +91,7 @@ python heart_disease.py
 
 #### Output
 - Displays loss and accuracy for both models.
-- Shows the classification results, including confusion matrix and classification report.
+- Shows the classification results, including confusion matrix.
 
 ## Authors
 
