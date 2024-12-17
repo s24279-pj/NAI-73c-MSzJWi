@@ -1,6 +1,5 @@
 import tensorflow as tf
 import numpy as np
-from sklearn.metrics import classification_report
 import matplotlib.pyplot as plt
 
 
@@ -27,7 +26,7 @@ def main():
     """
     Główna funkcja, która ładuje zbiór danych Fashion MNIST, przetwarza go,
     trenuje dwa różne modele (mniejszy i większy), ocenia je,
-    a następnie wypisuje raporty klasyfikacji i macierze konfuzji.
+    a następnie wypisuje macierze konfuzji.
     """
 
     """
@@ -103,15 +102,6 @@ def main():
 
     print("Macierz konfuzji dla modelu 2:")
     print(cm_2)
-
-    """
-    # Raport klasyfikacji
-    """
-    print("Raport klasyfikacji dla modelu 1:")
-    print(classification_report(y_test, y_pred_1))
-
-    print("Raport klasyfikacji dla modelu 2:")
-    print(classification_report(y_test, y_pred_2))
 
 
 def build_model_small():
