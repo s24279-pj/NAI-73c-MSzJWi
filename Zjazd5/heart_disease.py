@@ -5,17 +5,10 @@ import numpy as np
 
 def confusion_matrix(y_true, y_pred, num_classes):
     """
-    Tworzy macierz konfuzji, porównując prawdziwe etykiety z przewidywanymi.
-
-    Argumenty:
-        y_true (array-like): Tablica prawdziwych etykiet klas.
-        y_pred (array-like): Tablica przewidywanych etykiet klas.
-        num_classes (int): Liczba klas w zadaniu klasyfikacyjnym.
+    Tworzy macierz konfuzji dla danych rzeczywistych i przewidywanych.
 
     Zwraca:
-        np.ndarray: Macierz konfuzji jako dwuwymiarowa tablica, gdzie każdy element [i, j]
-                    reprezentuje liczbę przypadków, w których klasa i została przewidziana
-                    jako klasa j.
+    - Matrycę konfuzji (num_classes x num_classes)
     """
     cm = np.zeros((num_classes, num_classes), dtype=int)
     for true_label, pred_label in zip(y_true, y_pred):
