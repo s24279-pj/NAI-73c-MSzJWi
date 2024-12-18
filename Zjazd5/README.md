@@ -28,12 +28,7 @@ Each model is evaluated using various performance metrics such as accuracy, loss
    - Animal classes: bird, cat, deer, dog, frog, and horse.
 2. **Fashion MNIST Dataset**: A dataset of 60,000 28x28 grayscale images of 10 clothing items.
 3. **Heart Disease Dataset**: A dataset of 303 records with 14 features used to predict the presence or absence of heart disease.
-4. **Tom and Jerry Dataset**: A dataset containing images of Tom and Jerry characters. The task is to classify images into four categories: 
-   - Tom
-   - Jerry
-   - Both Tom and Jerry
-   - Neither Tom nor Jerry
-   The dataset can be downloaded from [Kaggle: Tom and Jerry Image Classification](https://www.kaggle.com/datasets/balabaskar/tom-and-jerry-image-classification/data).
+4. **Tom and Jerry Dataset**: A dataset containing images of Tom and Jerry characters. The task is to classify images into four categories: Tom, Jerry, Both, None.
 
 ## Usage
 
@@ -74,6 +69,8 @@ python animals.py
 The script will display:
 - The model's accuracy and loss on the test dataset.
 - The confusion matrix for the predictions.
+![Animals cnn](images/animals.png)
+
 
 ### Clothing Image Classification (Fashion MNIST)
 
@@ -87,6 +84,22 @@ python clothes.py
 #### Output
 - Displays accuracy and loss for both models.
 - Prints confusion matrices for both models.
+![Clothes cnn](images/clothes.png)
+
+#### Comparison of Two Models
+
+In this project, we trained two different Convolutional Neural Networks (CNNs) on the **Fashion MNIST** dataset and evaluated their performance:
+
+- **Model 1 Accuracy**: 0.903
+- **Model 2 Accuracy**: 0.916
+
+The models were evaluated using accuracy, and the results were very close, with Model 2 achieving slightly better performance.
+
+#### Model Architecture Details:
+- **Model 1**: Smaller CNN with fewer filters and layers.
+- **Model 2**: Larger CNN with more filters and layers, which performed slightly better on the classification task.
+
+The evaluation metrics for both models were computed, and both showed a good level of performance for the Fashion MNIST classification task.
 
 ### Heart Disease Prediction
 
@@ -98,14 +111,24 @@ python heart_disease.py
 ```
 
 #### Output
-- Displays loss and accuracy for both models.
-- Shows the classification results, including confusion matrix.
+- Displays loss and accuracy.
+- Shows the classification results.
+![Heart_Disease cnn](images/hd5.png)
+
+
+#### Comparison with Previous Project Using SVC
+
+In addition to the neural networks implemented in this project, we compared the results of image classification and heart disease prediction with a previous project where we used Support Vector Classifier (SVC). The results showed a significant difference in performance:
+
+![Heart_Disease scv](images/hd4.png)
+
+- **SVC Accuracy**: 0.99
+- **Neural Network Accuracy**: 0.70
+
+This comparison highlights the potential advantages of using SVC for certain classification tasks, especially in cases where the model's complexity and training time need to be minimized. However, neural networks can still offer better performance in more complex scenarios, particularly for image-related tasks.
+
 
 ## Authors
 
 - Marta Szpilka
 - Jakub Więcek
-
----
-
-This README provides an overview of the structure and usage of the scripts for image classification and heart disease prediction tasks. Each script demonstrates practical applications of neural networks for different classification problems, evaluating the models based on performance metrics such as accuracy and confusion matrices.
