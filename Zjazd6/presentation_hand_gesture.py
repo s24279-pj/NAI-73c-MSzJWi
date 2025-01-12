@@ -1,6 +1,7 @@
 import cv2
 import mediapipe as mp
 import pyautogui
+import time  # Importujemy bibliotekę time
 
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
@@ -9,16 +10,21 @@ mp_gesture = mp.solutions.hands.Hands
 
 
 def detect_hand_direction(hand_landmarks):
-    thumb_x = hand_landmarks.landmark[mp_hands.HandLandmark.THUMB_TIP].x
-    pinky_x = hand_landmarks.landmark[mp_hands.HandLandmark.PINKY_TIP].x
+    # Pobieramy współrzędne kciuka i małego palca
+    thumb_tip = hand_landmarks.landmark[mp_hands.HandLandmark.THUMB_TIP]
+    middle_tip = hand_landmarks.landmark[mp_hands.HandLandmark.MIDDLE_FINGER_TIP]
 
-#Sprawdzenie w którą stronę jest zwrócona ręka
-    if thumb_x < pinky_x:
-        return "LEFT"
+    # Jeżeli dłoń jest w poziomie (jeśli różnica w osi X jest większa niż w osi Y)
+    if abs(thumb_tip.x - middle_tip.x) > abs(thumb_tip.y - middle_tip.y) - 0.1:
+        if thumb_tip.x < middle_tip.x:
+            return "LEFT"  # Kciuk po lewej stronie, ręka skierowana w lewo
+        else:
+            return "RIGHT"  # Kciuk po prawej stronie, ręka skierowana w prawo
     else:
-        return "RIGHT"
+        return "UNKNOWN"  # Ręka nie jest w poziomie
 
-def thumb_up():
+
+def is_thumb_up(hand_landmarks):
     # Pobieramy punkty końcowe kciuka oraz innych palców
     thumb_tip = hand_landmarks.landmark[mp.solutions.hands.HandLandmark.THUMB_TIP]
     index_tip = hand_landmarks.landmark[mp.solutions.hands.HandLandmark.INDEX_FINGER_TIP]
@@ -44,16 +50,44 @@ def thumb_up():
             abs(middle_tip.x - thumb_tip.x) < abs(middle_base.x - thumb_tip.x) and
             abs(ring_tip.x - thumb_tip.x) < abs(ring_base.x - thumb_tip.x) and
             abs(pinky_tip.x - thumb_tip.x) < abs(pinky_base.x - thumb_tip.x)
-        ):
+    ):
+        return True
+
+def is_thumb_down(hand_landmarks):
+    # Pobieramy punkty końcowe kciuka oraz innych palców
+    thumb_tip = hand_landmarks.landmark[mp.solutions.hands.HandLandmark.THUMB_TIP]
+    index_tip = hand_landmarks.landmark[mp.solutions.hands.HandLandmark.INDEX_FINGER_TIP]
+    middle_tip = hand_landmarks.landmark[mp.solutions.hands.HandLandmark.MIDDLE_FINGER_TIP]
+    ring_tip = hand_landmarks.landmark[mp.solutions.hands.HandLandmark.RING_FINGER_TIP]
+    pinky_tip = hand_landmarks.landmark[mp.solutions.hands.HandLandmark.PINKY_TIP]
+
+    # Podstawy palców (przykładowo: podstawy palca wskazującego, środkowego itd.)
+    index_base = hand_landmarks.landmark[mp.solutions.hands.HandLandmark.INDEX_FINGER_MCP]
+    middle_base = hand_landmarks.landmark[mp.solutions.hands.HandLandmark.MIDDLE_FINGER_MCP]
+    ring_base = hand_landmarks.landmark[mp.solutions.hands.HandLandmark.RING_FINGER_MCP]
+    pinky_base = hand_landmarks.landmark[mp.solutions.hands.HandLandmark.PINKY_MCP]
+
+    # Sprawdzamy, czy kciuk jest wyraźnie wyższy niż pozostałe palce
+    # oraz czy inne palce są schowane (końcówki palców blisko podstawy)
+    if (thumb_tip.y > index_tip.y and
+            thumb_tip.y > middle_tip.y and
+            thumb_tip.y > ring_tip.y and
+            thumb_tip.y > pinky_tip.y and
+
+            # Sprawdzamy, czy końcówki palców są blisko podstawy (czy są zgięte)
+            abs(index_tip.x - thumb_tip.x) < abs(index_base.x - thumb_tip.x) and
+            abs(middle_tip.x - thumb_tip.x) < abs(middle_base.x - thumb_tip.x) and
+            abs(ring_tip.x - thumb_tip.x) < abs(ring_base.x - thumb_tip.x) and
+            abs(pinky_tip.x - thumb_tip.x) < abs(pinky_base.x - thumb_tip.x)
+    ):
         return True
 
 
-
 cap = cv2.VideoCapture(0)
-with (mp_hands.Hands(
+with mp_hands.Hands(
         model_complexity=0,
         min_detection_confidence=0.5,
-        min_tracking_confidence=0.5) as hands):
+        min_tracking_confidence=0.5) as hands:
     while cap.isOpened():
         success, image = cap.read()
         if not success:
@@ -76,32 +110,43 @@ with (mp_hands.Hands(
                     mp_drawing_styles.get_default_hand_landmarks_style(),
                     mp_drawing_styles.get_default_hand_connections_style())
 
-                #zwraca która ręka i w którą stronę jest zwrócona
+                # Określenie kierunku dłoni
                 direction = detect_hand_direction(hand_landmarks)
-                hand_type = results.multi_handedness[0].classification[0].label
+                hand_type = handedness.classification[0].label
 
-                #Kamerka ma lustrzane odbicie
+                # Korekta dla lustrzanego odbicia
                 if hand_type == "Right":
                     hand_type = "Left"
                 else:
                     hand_type = "Right"
 
-                if(thumb_up()):
+                # Rozpoznawanie gestów
+                if is_thumb_up(hand_landmarks):
                     gesture = "Thumb up"
                     pyautogui.press('space')
                     print("Spacja wciśnięta!")
+                    time.sleep(1)  # Opóźnienie 1 sekundy po naciśnięciu spacji
+                elif is_thumb_down(hand_landmarks):
+                        gesture = "Thumb down"
+                        pyautogui.press('ESC')
+                        print("KCIUK W DÓŁ")
+                        time.sleep(1)
                 else:
-                    gesture = direction
-                    if direction == "RIGHT":
+                    if direction == "LEFT":
+                        gesture = "Left"
                         pyautogui.press('left')
-                        print("STRZALKA W LEWO")
-                    else:
+                        print("STRZAŁKA W LEWO")
+                        time.sleep(1)  # Opóźnienie 1 sekunde po naciśnięciu strzałki w lewo
+                    elif direction == "RIGHT":
+                        gesture = "Right"
                         pyautogui.press('right')
-                        print("STRZALKA W PRAWO")
+                        print("STRZAŁKA W PRAWO")
+                        time.sleep(1)  # Opóźnienie 1 sekunde po naciśnięciu strzałki w prawo
+                    else:
+                        gesture = "UNKNOWN"
 
-
+                # Wyświetlanie informacji
                 print(f"{hand_type}: {direction}, Gest: {gesture}")
-
                 cv2.putText(image, f"{hand_type}: {direction}, {gesture}", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1,
                             (0, 255, 0), 2, cv2.LINE_AA)
 
