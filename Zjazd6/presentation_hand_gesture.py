@@ -10,7 +10,15 @@ mp_gesture = mp.solutions.hands.Hands
 
 
 def detect_hand_direction(hand_landmarks):
-    # Pobieramy współrzędne kciuka i małego palca
+    """
+    Określa poziomy kierunek dłoni (lewo lub prawo) na podstawie pozycji kciuka i środkowego palca.
+
+    Argumenty:
+        hand_landmarks: Punkty charakterystyczne dłoni wykryte przez MediaPipe.
+
+    Zwraca:
+        str: "LEFT" (lewo), "RIGHT" (prawo) lub "UNKNOWN" (nieznany) w zależności od orientacji dłoni.
+    """
     thumb_tip = hand_landmarks.landmark[mp_hands.HandLandmark.THUMB_TIP]
     middle_tip = hand_landmarks.landmark[mp_hands.HandLandmark.MIDDLE_FINGER_TIP]
 
@@ -25,6 +33,16 @@ def detect_hand_direction(hand_landmarks):
 
 
 def is_thumb_up(hand_landmarks):
+    """
+    Sprawdza, czy wykryto gest "kciuk w górę".
+
+    Argumenty:
+        hand_landmarks: Punkty charakterystyczne dłoni wykryte przez MediaPipe.
+
+    Zwraca:
+        bool: True, jeśli wykryto gest "kciuk w górę", w przeciwnym razie False.
+    """
+
     # Pobieramy punkty końcowe kciuka oraz innych palców
     thumb_tip = hand_landmarks.landmark[mp.solutions.hands.HandLandmark.THUMB_TIP]
     index_tip = hand_landmarks.landmark[mp.solutions.hands.HandLandmark.INDEX_FINGER_TIP]
@@ -54,6 +72,16 @@ def is_thumb_up(hand_landmarks):
         return True
 
 def is_thumb_down(hand_landmarks):
+    """
+    Sprawdza, czy wykryto gest "kciuk w dół".
+
+    Argumenty:
+        hand_landmarks: Punkty charakterystyczne dłoni wykryte przez MediaPipe.
+
+    Zwraca:
+        bool: True, jeśli wykryto gest "kciuk w dół", w przeciwnym razie False.
+    """
+
     # Pobieramy punkty końcowe kciuka oraz innych palców
     thumb_tip = hand_landmarks.landmark[mp.solutions.hands.HandLandmark.THUMB_TIP]
     index_tip = hand_landmarks.landmark[mp.solutions.hands.HandLandmark.INDEX_FINGER_TIP]
