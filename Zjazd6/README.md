@@ -4,7 +4,7 @@
 This program enables controlling a PowerPoint presentation through hand gestures. The gestures are recognized using a webcam, and the corresponding keyboard shortcuts are simulated to control the presentation.
 
 ### Key Gestures:
-- **Thumb up** — Press the spacebar (play or pause a video or presentation).
+- **Thumb up** — Press the spacebar (play or pause a video).
 - **Thumb down** — Press the Escape key (stop the presentation).
 - **Left hand** — Press the left arrow key (go to the previous slide).
 - **Right hand** — Press the right arrow key (go to the next slide).
