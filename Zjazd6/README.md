@@ -58,6 +58,41 @@ The program continuously analyzes the webcam feed and takes actions based on the
 
 ---
 
+## Examples of Usage
+
+### 1. Video Example:
+A short video demonstrating the program in action:
+- The user moves to the next slide with a **right hand gesture**.
+- The user moves to the previous slide with a **left hand gesture**.
+- The user shows a **thumb up** gesture, and the movie starts.
+- The user shows another **thumb up** gesture, and the movie pauses.
+- The user stops the presentation with a **thumb down** gesture.
+
+**[Watch the Video](dobry.mov)**
+
+---
+
+### 2. Screenshots:
+Here are some example screenshots:
+
+1. **Program Start:**
+   The webcam is initialized, and gesture recognition begins.
+   ![Program Start](g1.png)
+
+2. **Thumb Up Gesture:**
+   The program detects a thumb-up gesture and starts the presentation.
+   ![Thumb Up Gesture](g2.png)
+
+3. **Right Hand Gesture:**
+   The program detects a right-hand gesture and moves to the next slide.
+   ![Right Hand Gesture](g3.png)
+
+4. **Thumb Down Gesture:**
+   The program detects a thumb-down gesture and stops the presentation.
+   ![Thumb Down Gesture](g4.png)
+
+---
+
 ## Troubleshooting:
 
 - **Camera not detected:** Ensure the camera is properly connected, and the program has permission to access it.
