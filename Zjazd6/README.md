@@ -75,21 +75,27 @@ A short video demonstrating the program in action:
 ### 2. Screenshots:
 Here are some example screenshots:
 
-1. **Program Start:**
-   The webcam is initialized, and gesture recognition begins.
-   ![Program Start](images/g1.png)
+1. **Hand Pointing Left Gesture:**
+   The program detects a gesture where the hand is pointing to the left.
+   ![Left gesture](images/g4.png)
 
 2. **Thumb Up Gesture:**
-   The program detects a thumb-up gesture and starts the presentation.
+   The program detects a thumb-up gesture.
    ![Thumb Up Gesture](images/g2.png)
 
-3. **Right Hand Gesture:**
-   The program detects a right-hand gesture and moves to the next slide.
-   ![Right Hand Gesture](images/g3.png)
+3. **Hand Pointing Right Gesture:**
+   The program detects a gesture where the hand is pointing to the right.
+   ![Right Hand Gesture](images/g1.png)
 
 4. **Thumb Down Gesture:**
-   The program detects a thumb-down gesture and stops the presentation.
-   ![Thumb Down Gesture](images/g4.png)
+   The program detects a thumb-down gesture.
+   ![Thumb Down Gesture](images/g3.png)
+
+### 3. Console Output Example:
+
+Here is an example of the console output during the program's execution:
+![Output](images/output.png)
+
 
 ---
 
