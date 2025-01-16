@@ -68,7 +68,7 @@ A short video demonstrating the program in action:
 - The user shows another **thumb up** gesture, and the movie pauses.
 - The user stops the presentation with a **thumb down** gesture.
 
-**[Watch the Video](dobry.mov)**
+**[Watch the Video](images/dobre.mov)**
 
 ---
 
@@ -77,19 +77,19 @@ Here are some example screenshots:
 
 1. **Program Start:**
    The webcam is initialized, and gesture recognition begins.
-   ![Program Start](g1.png)
+   ![Program Start](images/g1.png)
 
 2. **Thumb Up Gesture:**
    The program detects a thumb-up gesture and starts the presentation.
-   ![Thumb Up Gesture](g2.png)
+   ![Thumb Up Gesture](images/g2.png)
 
 3. **Right Hand Gesture:**
    The program detects a right-hand gesture and moves to the next slide.
-   ![Right Hand Gesture](g3.png)
+   ![Right Hand Gesture](images/g3.png)
 
 4. **Thumb Down Gesture:**
    The program detects a thumb-down gesture and stops the presentation.
-   ![Thumb Down Gesture](g4.png)
+   ![Thumb Down Gesture](images/g4.png)
 
 ---
 
