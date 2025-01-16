@@ -49,7 +49,8 @@ def is_thumb_up(hand_landmarks):
         bool: True, jeśli wykryto gest "kciuk w górę", w przeciwnym razie False.
     """
 
-    # Pobieramy punkty końcowe kciuka oraz innych palców
+    # Pobieramy punkty końcowe kciuka oraz innych palców ›
+
     thumb_tip = hand_landmarks.landmark[mp.solutions.hands.HandLandmark.THUMB_TIP]
     index_tip = hand_landmarks.landmark[mp.solutions.hands.HandLandmark.INDEX_FINGER_TIP]
     middle_tip = hand_landmarks.landmark[mp.solutions.hands.HandLandmark.MIDDLE_FINGER_TIP]
