@@ -2,10 +2,23 @@ import gym
 import numpy as np
 import time
 
+"""
+Tworzenie środowiska Bowling-v4 przy użyciu biblioteki Gym oraz inicjalizacja parametrów dla algorytmu Q-learning.
+
+Zmienne:
+- env: Obiekt środowiska Gym, symulacja gry w kręgle ("Bowling-v4") z włączonym trybem renderowania.
+- epsilon: Współczynnik eksploracji w algorytmie Q-learning, określa prawdopodobieństwo losowego wyboru akcji (0.83).
+- max_steps: Maksymalna liczba kroków na jeden epizod (600).
+- total_episodes: Łączna liczba epizodów treningowych (100).
+- lr_rate: Współczynnik uczenia (learning rate) (0.90).
+- gamma: Współczynnik dyskontowania przyszłych nagród (0.80).
+- Q: Słownik przechowujący wartości Q dla stanów i akcji w algorytmie Q-learning.
+"""
+
 env = gym.make("Bowling-v4", render_mode="human")
 
-epsilon = 0.9
-max_steps = 500
+epsilon = 0.83
+max_steps = 600
 total_episodes = 100
 
 lr_rate = 0.90
@@ -84,12 +97,6 @@ def learn(state, state2, reward, action):
         reward (float): Nagroda za wykonaną akcję.
         action (int): Indeks akcji, którą wykonał agent.
 
-    Opis:
-        Zgodnie z równaniem Q-learning, wartość Q dla pary (stan, akcja) jest aktualizowana na podstawie
-        nagrody oraz maksymalnej wartości Q w następnym stanie. Działa to w następujący sposób:
-        Q(s, a) ← Q(s, a) + α * (r + γ * max_a Q(s', a) - Q(s, a)),
-        gdzie α to współczynnik uczenia, γ to współczynnik dyskontowania, r to nagroda,
-        a max_a Q(s', a) to maksymalna wartość Q w stanie s'.
     """
     predict = get_q_value(state, action)
     max_q_next = max(get_q_value(state2, a) for a in range(env.action_space.n))
