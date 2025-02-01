@@ -67,6 +67,8 @@ python bowling_q_learning.py
 - Displays the **total reward** after each episode.
 - Saves the **Q-table** to `bowling_results.txt` after training.
 
+  ![Screenshot](https://github.com/s24279-pj/NAI-73c-MSzJWi/blob/main/Zjazd7/images/Zrzut%20ekranu%202025-01-28%20o%2013.58.21.png)
+
 ## Evaluation
 
 The agent's performance is measured by:
