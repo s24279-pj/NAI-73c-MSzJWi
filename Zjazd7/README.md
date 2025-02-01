@@ -74,6 +74,9 @@ The agent's performance is measured by:
 - **Total reward per episode**: A higher reward indicates better performance.
 - **Q-table**: The final Q-table provides learned action values.
 
+## Demo
+[![Video](https://github.com/s24279-pj/NAI-73c-MSzJWi/edit/main/Zjazd7/images/movie.mov)]
+
 ## Authors
 
 - Marta Szpilka
